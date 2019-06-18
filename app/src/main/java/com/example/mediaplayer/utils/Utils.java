@@ -1,6 +1,6 @@
 package com.example.mediaplayer.utils;
 
-import com.example.mymusicplayer.data.Song;
+import com.example.mediaplayer.data.Song;
 
 import java.util.ArrayList;
 import java.util.List;
