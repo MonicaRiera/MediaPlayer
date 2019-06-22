@@ -2,27 +2,21 @@ package com.example.mediaplayer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.mediaplayer.data.Song;
 import com.example.mediaplayer.utils.Utils;
 
-import java.io.IOException;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private MediaPlayer mediaPlayer;
-    List<Song> songs;
+    List<Song> songs = Utils.getListData();
     int songPosition;
 
     @Override
@@ -30,23 +24,19 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        songs = Utils.getListData();
-        //mediaPlayer = new MediaPlayer();
-        //mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
         final ListView listView = findViewById(R.id.activity_main__list_view__data);
         listView.setAdapter(new MyListAdapter(this, R.layout.custom_adapter, songs));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "Position " + position + " clicked", Toast.LENGTH_SHORT).show();
-                setSongPosition(position);
-                //playSong();
+                generateIntent(position);
             }
         });
 
         final ImageButton btnPlay = findViewById(R.id.activity_main__btn__play);
         btnPlay.setOnClickListener(this);
+        final ImageButton btnPause = findViewById(R.id.activity_main__btn__pause);
+        btnPause.setOnClickListener(this);
         final ImageButton btnNext = findViewById(R.id.activity_main__btn__next);
         btnNext.setOnClickListener(this);
         final ImageButton btnPrevious = findViewById(R.id.activity_main__btn__previous);
@@ -54,66 +44,47 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnPre
 
     }
 
-    private void setSongPosition(int position) {
-        this.songPosition = position;
-        playSong();
-    }
-
-
-    @Override
-    public void onPrepared(MediaPlayer mp) {
-        mediaPlayer.start();
-        Toast.makeText(this, "Playing song" + songPosition, Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.activity_main__btn__play) {
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
-            } else {
-                playSong();
-            }
-        } else if (v.getId() == R.id.activity_main__btn__next) {
-            if (songPosition < songs.size()-1) {
-                setSongPosition(songPosition + 1);
-                //playSong();
-            } else {
-                setSongPosition(0);
-                //playSong();
-            }
-        } else if (v.getId() == R.id.activity_main__btn__previous) {
-            if (songPosition > 0) {
-                setSongPosition(songPosition - 1);
-            } else {
-                setSongPosition(songs.size()-1);
-            }
+        switch (v.getId()) {
+            case R.id.activity_main__btn__play:
+                generateIntent(songPosition);
+                break;
+            case R.id.activity_main__btn__pause:
+                generateIntent(-1);
+                break;
+            case R.id.activity_main__btn__next:
+                if (songPosition < songs.size()-1) {
+                    generateIntent(songPosition + 1);
+                } else {
+                    generateIntent(0);
+                }
+                break;
+            case R.id.activity_main__btn__previous:
+                if (songPosition > 0) {
+                    generateIntent(songPosition - 1);
+                } else {
+                    generateIntent(songs.size()-1);
+                }
+                break;
+                default:
+                    break;
         }
     }
 
-    private void playSong() {
-        if (mediaPlayer == null) {
-            mediaPlayerSettings();
+    private void generateIntent(int position) {
+        if (position != -1) {
+            this.songPosition = position;
         }
-
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
-            Toast.makeText(this, "Music stopped", Toast.LENGTH_SHORT).show();
-            mediaPlayerSettings();
-        }
-
-        mediaPlayer.prepareAsync();
+        Intent intent = new Intent(this, MyMediaService.class);
+        intent.putExtra("position", position);
+        startService(intent);
     }
 
-    private void mediaPlayerSettings() {
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        final Uri mediaPath = Uri.parse("android.resource://" + getPackageName() + "/raw/" + songs.get(songPosition).getSongId());
-        try {
-            mediaPlayer.setDataSource(getApplicationContext(), mediaPath);
-            mediaPlayer.setOnPreparedListener(this);
-        } catch (IOException e) {
-            e.printStackTrace();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (isFinishing()) {
         }
     }
 }
