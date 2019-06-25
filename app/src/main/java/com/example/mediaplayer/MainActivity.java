@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private PendingIntent getPendingIntentWithRequestCode(int requestCode) {
         Intent notificationIntent = new Intent(this, SecondActivity.class);
+        notificationIntent.putExtra("position", songPosition);
         return PendingIntent.getActivity(this, requestCode, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
     }
 
