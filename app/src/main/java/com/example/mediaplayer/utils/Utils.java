@@ -1,5 +1,19 @@
 package com.example.mediaplayer.utils;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.widget.RemoteViews;
+
+import androidx.core.app.NotificationCompat;
+
+import com.example.mediaplayer.MyMediaService;
+import com.example.mediaplayer.R;
+import com.example.mediaplayer.SecondActivity;
 import com.example.mediaplayer.data.Song;
 
 import java.util.ArrayList;
@@ -39,6 +53,54 @@ public class Utils {
 
     }
 
+
+    public static void generateNotification(Context context, int songPosition) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "channelId");
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Service.NOTIFICATION_SERVICE);
+
+        builder.setSmallIcon(R.mipmap.ic_launcher_speaker)
+                .setContentTitle("Media Notification")
+                .setContentText("Notification image")
+                .setAutoCancel(true)
+                .setContentIntent(getPendingIntentWithRequestCode(23, context, songPosition));
+
+        RemoteViews customNotification = new RemoteViews(context.getPackageName(), R.layout.custom_notification);
+        customNotification.setImageViewResource(R.id.custom_notification__img__speaker, R.mipmap.ic_launcher_speaker);
+        customNotification.setTextViewText(R.id.custom_notification__tv__header, "Now playing...");
+        customNotification.setTextViewText(R.id.custom_notification__tv__song_title, getListData().get(songPosition).getTitle());
+        customNotification.setTextViewText(R.id.custom_notification__tv__song_info, "Originary from " + getListData().get(songPosition).getCountry());
+        builder.setContent(customNotification);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+        {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel notificationChannel =
+                    new NotificationChannel("NOTIFICATION_CHANNEL_ID",
+                            "NOTIFICATION_CHANNEL_NAME",
+                            importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            builder.setChannelId("NOTIFICATION_CHANNEL_ID");
+            notificationManager.createNotificationChannel(notificationChannel);
+
+        }
+
+        notificationManager.notify(1, builder.build());
+    }
+
+    public static PendingIntent getPendingIntentWithRequestCode(int requestCode, Context context, int songPosition) {
+        Intent notificationIntent = new Intent(context, SecondActivity.class);
+        notificationIntent.putExtra("position", songPosition);
+        return PendingIntent.getActivity(context, requestCode, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+    }
+
+    public static void generateIntent(Context context, int position) {
+        Intent intent = new Intent(context, MyMediaService.class);
+        intent.putExtra("position", position);
+        context.startService(intent);
+    }
 
 
 
