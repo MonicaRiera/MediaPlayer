@@ -1,6 +1,8 @@
 package com.example.mediaplayer.data;
 
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class Song {
 
     private String imageId;
@@ -9,15 +11,16 @@ public class Song {
     private int duration;
     private String country;
     private String comments;
-    //public static List<Song> songs = new ArrayList<>();
+    private LatLng location;
 
-    public Song(String imageId, String songId, String title, int duration, String country, String comments) {
+    public Song(String imageId, String songId, String title, int duration, String country, String comments, LatLng location) {
         this.imageId = imageId;
         this.songId = songId;
         this.title = title;
         this.duration = duration;
         this.country = country;
         this.comments = comments;
+        this.location = location;
 
     }
 
@@ -43,5 +46,9 @@ public class Song {
 
     public String getComments() {
         return comments;
+    }
+
+    public LatLng getLocation() {
+        return location;
     }
 }

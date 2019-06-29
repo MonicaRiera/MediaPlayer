@@ -15,6 +15,7 @@ import com.example.mediaplayer.MyMediaService;
 import com.example.mediaplayer.R;
 import com.example.mediaplayer.SecondActivity;
 import com.example.mediaplayer.data.Song;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,16 +44,17 @@ public class Utils {
                 "The music of Indonesia demonstrates its cultural diversity, the local musical creativity, as well as subsequent foreign musical influences that shaped contemporary music scenes of Indonesia. Nearly thousands of Indonesian islands having its own cultural and artistic history and character",
                 "Samba is a Brazilian musical genre and dance style, with its roots in Africa via the West African slave trade and African religious traditions, particularly of Angola"};
 
+        LatLng[] listLocations = {new LatLng(-23.56,-46.63), new LatLng(30.27,-97.78), new LatLng(28.62,77.18), new LatLng(65.02,-18.86), new LatLng(37.56,126.99), new LatLng(-6.20,106.84), new LatLng(-23.56,-46.63)};
+
         List<Song> mySongList = new ArrayList<>();
 
         for (int i = 0; i < listTitles.length; i++ ) {
-            Song song = new Song(listImages[i], listSongs[i], listTitles[i], listDurations[i], listCountries[i], listComments[i]);
+            Song song = new Song(listImages[i], listSongs[i], listTitles[i], listDurations[i], listCountries[i], listComments[i], listLocations[i]);
             mySongList.add(song);
         }
         return mySongList;
 
     }
-
 
     public static void generateNotification(Context context, int songPosition) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "channelId");
@@ -94,12 +96,6 @@ public class Utils {
         Intent notificationIntent = new Intent(context, SecondActivity.class);
         notificationIntent.putExtra("position", songPosition);
         return PendingIntent.getActivity(context, requestCode, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-    }
-
-    public static void generateIntent(Context context, int position) {
-        Intent intent = new Intent(context, MyMediaService.class);
-        intent.putExtra("position", position);
-        context.startService(intent);
     }
 
 
