@@ -13,14 +13,14 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
         android:layout_toEndOf="@+id/custom_notification__img__speaker"
         android:layout_toRightOf="@+id/custom_notification__img__speaker"
-        android:text="Now playing..." />
+        android:text="@string/now_playing" />
 
     <ImageView
         android:id="@+id/custom_notification__img__speaker"
@@ -30,11 +30,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:srcCompat="@mipmap/ic_launcher" />
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
+        app:srcCompat="@mipmap/ic_launcher"
+        android:contentDescription="@string/song_image" />
 
     <TextView
         android:id="@+id/custom_notification__tv__song_title"
@@ -43,14 +44,14 @@
         android:layout_below="@+id/custom_notification__tv__header"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
         android:layout_toEndOf="@+id/custom_notification__img__speaker"
         android:layout_toRightOf="@+id/custom_notification__img__speaker"
-        android:text="Song Title" />
+        android:text="@string/song_title" />
 
     <TextView
         android:id="@+id/custom_notification__tv__song_info"
@@ -59,13 +60,13 @@
         android:layout_below="@+id/custom_notification__tv__song_title"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
         android:layout_marginBottom="650dp"
         android:layout_toEndOf="@+id/custom_notification__img__speaker"
         android:layout_toRightOf="@+id/custom_notification__img__speaker"
-        android:text="Originary from..." />
+        android:text="@string/notification_body" />
 </RelativeLayout>

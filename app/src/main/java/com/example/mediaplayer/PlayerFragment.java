@@ -106,7 +106,5 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Intent intent = new Intent(getContext(), MyMediaService.class);
-        getContext().stopService(intent);
     }
 }

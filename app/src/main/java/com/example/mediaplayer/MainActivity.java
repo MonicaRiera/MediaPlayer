@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (this.isFinishing()) {
-            player.onDestroy();
         }
     }
 }
