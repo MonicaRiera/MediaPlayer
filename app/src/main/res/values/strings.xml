@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MediaPlayer</string>
+    <string name="app_name">BTS Media Player</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -12,4 +12,6 @@
     <string name="button_pause">pause</string>
     <string name="button_next">next</string>
     <string name="song_comments">song comments</string>
+    <string name="like">Like</string>
+    <string name="dislike">Dislike</string>
 </resources>
